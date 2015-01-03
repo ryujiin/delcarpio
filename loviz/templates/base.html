@@ -1,0 +1,128 @@
+{% load static from staticfiles %}
+<!doctype html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<title>
+		Loviz DelCarpio :: lovizdelcarpio.com donde encontras los mejores pantuflas, botas, sandalias
+	</title>
+
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	<meta name="created" content="{% now "jS M Y h:i" %}" />
+    <meta name="description" content="Loviz DelCarpio® , Encontraras lo mejor en pantuflas, sandalias, botas, flats y demas. Envio Gratis para todo el peru por compras mayores a S/.60.00" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="https://s3-us-west-2.amazonaws.com/lovizfront/img/logodelcarpio2_1.ico" />    
+    {% block stilos%}
+    	<link href='http://fonts.googleapis.com/css?family=Playfair+Display|Great+Vibes|Pathway+Gothic+One|Open+Sans' rel='stylesheet' type='text/css'>
+	    <link rel="stylesheet" href="{% static "css/normalize.css/" %}" />
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	    <link rel="stylesheet" href="{% static "css/carrusel/owl.carousel.css/" %}" />	    
+	    <link rel="stylesheet" href="{% static "css/jquery-ui.min.css/" %}" />	    
+	    <link rel="stylesheet" href="{% static "css/iconos.css/" %}" />
+	    <link rel="stylesheet" href="{% static "css/estilos.css/" %}" />
+    {% endblock%}
+    {% block extrastyles %}{% endblock %}
+    {% block extrahead %}{% endblock %}
+
+</head>
+<body id="{% block body_id %}default{% endblock %}" class="{% block body_class %}default{% endblock %}">
+	{% block layout %}
+	{% endblock %}
+	{% block tracking %}
+	{% endblock %}
+	{% block templatesjs %}{% endblock %}
+	
+	{% block extrascript %}
+	{% endblock%}
+
+	{%block scripts%}
+    <!--
+	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="//underscorejs.org/underscore-min.js"></script>
+<script src="{% static "js/vendor/backbone-min.js/" %}"></script>
+    "></script>
+
+    -->
+    <script src="{% static "js/vendor/jquery.js/" %}"></script>
+    <script src="{% static "js/vendor/underscore.js/" %}"></script>
+    
+	<script src="//backbonejs.org/backbone.js"></script>        
+
+	<script src="{% static "js/vendor/swig.js/" %}"></script>
+	
+	<script src="{% static "js/vendor/owl.carousel.js/" %}"></script>	
+	<script src="{% static "js/vendor/jquery-ui.js/" %}"></script>	
+	<script src="{% static "js/vendor/jquery.cookie.js/" %}"></script>
+	<script src="{% static "js/vendor/jquery.storageapi.min.js/" %}"></script>
+	<script src="{% static "js/vendor/jquery.zoom.js/" %}"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+
+	<script src="{% static "js/init.js/" %}"></script>
+	<!--Models-->
+	<script src="{% static "js/backbone/models/carro.js/" %}"></script>
+	<script src="{% static "js/backbone/models/carro/linea.js/" %}"></script>
+	<script src="{% static "js/backbone/models/usuario.js/" %}"></script>
+	<script src="{% static "js/backbone/models/usuario/direcciones.js/" %}"></script>
+	<script src="{% static "js/backbone/models/pagina/pagina.js/" %}"></script>
+	<script src="{% static "js/backbone/models/tienda/banner_header.js/" %}"></script>
+	<script src="{% static "js/backbone/models/tienda/bloque.js/" %}"></script>
+	<script src="{% static "js/backbone/models/tienda/carrusel.js/" %}"></script>
+	<script src="{% static "js/backbone/models/tienda/comentario.js/" %}"></script>
+	<script src="{% static "js/backbone/models/tienda/menu.js/" %}"></script>
+	<script src="{% static "js/backbone/models/catalogo/producto.js/" %}"></script>
+	<script src="{% static "js/backbone/models/catalogo/producto_single.js/" %}"></script>
+	<script src="{% static "js/backbone/models/catalogo/estrellas.js/" %}"></script>
+	<script src="{% static "js/backbone/models/catalogo/filtros.js/" %}"></script>
+	<!--Collections-->
+	<script src="{% static "js/backbone/collections/pagina/paginas.js/" %}"></script>
+	<script src="{% static "js/backbone/collections/usuario/direcciones.js/" %}"></script>
+	<script src="{% static "js/backbone/collections/tienda/bloques.js/" %}"></script>
+	<script src="{% static "js/backbone/collections/tienda/carruseles.js/" %}"></script>
+	<script src="{% static "js/backbone/collections/tienda/comentarios.js/" %}"></script>
+	<script src="{% static "js/backbone/collections/tienda/menus.js/" %}"></script>
+	<script src="{% static "js/backbone/collections/catalogo/productos.js/" %}"></script>
+	<script src="{% static "js/backbone/collections/catalogo/producto_single.js/" %}"></script>
+	<script src="{% static "js/backbone/collections/catalogo/categorias.js/" %}"></script>
+	<script src="{% static "js/backbone/collections/catalogo/filtros.js/" %}"></script>
+	<script src="{% static "js/backbone/collections/carro/lineas.js/" %}"></script>
+
+	<!--Views-->
+	<script src="{% static "js/backbone/views/carro/carro.js/" %}"></script>
+		<script src="{% static "js/backbone/views/carro/mini_carro.js/" %}"></script>
+		<script src="{% static "js/backbone/views/carro/linea_add_cart.js/" %}"></script>
+		<script src="{% static "js/backbone/views/carro/lineas_carro.js/" %}"></script>
+		<script src="{% static "js/backbone/views/carro/carro_tabla_total.js/" %}"></script>
+		<script src="{% static "js/backbone/views/carro/num_lineas_carro.js/" %}"></script>
+		<script src="{% static "js/backbone/views/carro/formu_envio.js/" %}"></script>
+	<script src="{% static "js/backbone/views/pagina/pagina.js/" %}"></script>
+		<script src="{% static "js/backbone/views/pagina/header_banner.js/" %}"></script>
+	<script src="{% static "js/backbone/views/usuario/usuario.js/" %}"></script>
+		<script src="{% static "js/backbone/views/usuario/mini_usuario.js/" %}"></script>
+		<script src="{% static "js/backbone/views/usuario/login.js/" %}"></script>
+		<script src="{% static "js/backbone/views/usuario/crear_user.js/" %}"></script>
+	<script src="{% static "js/backbone/views/tienda/body.js/" %}"></script>
+		<script src="{% static "js/backbone/views/tienda/bloque.js/" %}"></script>
+		<script src="{% static "js/backbone/views/tienda/carrusel.js/" %}"></script>
+		<script src="{% static "js/backbone/views/tienda/menu.js/" %}"></script>
+		<script src="{% static "js/backbone/views/tienda/lista_comentario.js/" %}"></script>
+		<script src="{% static "js/backbone/views/tienda/comentarios.js/" %}"></script>
+	<script src="{% static "js/backbone/views/comprar/comprar.js/" %}"></script>
+		<script src="{% static "js/backbone/views/comprar/comprar_bloque.js/" %}"></script>
+		<script src="{% static "js/backbone/views/comprar/metodo_pago.js/" %}"></script>
+	<script src="{% static "js/backbone/views/catalogo/catalogo.js/" %}"></script>
+		<script src="{% static "js/backbone/views/catalogo/producto.js/" %}"></script>
+		<script src="{% static "js/backbone/views/catalogo/categorias.js/" %}"></script>
+		<script src="{% static "js/backbone/views/catalogo/filtro_link.js/" %}"></script>
+		<script src="{% static "js/backbone/views/catalogo/filtro_bloque.js/" %}"></script>
+		<script src="{% static "js/backbone/views/catalogo/etiqueta_filtro.js/" %}"></script>
+	<script src="{% static "js/backbone/views/producto_single/producto_single.js/" %}"></script>
+		<script src="{% static "js/backbone/views/producto_single/galeria.js/" %}"></script>
+		<script src="{% static "js/backbone/views/producto_single/estrellas.js/" %}"></script>
+	<!--routers-->
+	<script src="{% static "js/backbone/routers/base.js/" %}"></script>
+
+	<script src="{% static "js/main.js/" %}"></script>
+	{%endblock%}
+</body>
+</html>

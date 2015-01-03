@@ -37,6 +37,21 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #apps de terceros
+    'rest_framework',
+    'rest_framework.authtoken',
+    'sorl.thumbnail',
+    'gunicorn',
+    #mis apps
+    'carro',
+    'cliente',
+    'catalogo',
+    'contabilidad',
+    'cmsloviz',
+    'desboard',
+    'pedido',
+    'ubigeo',
+    'tienda',
 )
 
 MIDDLEWARE_CLASSES = (
