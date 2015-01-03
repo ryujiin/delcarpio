@@ -4,38 +4,21 @@ from django.contrib.auth.models import User as User
 
 
 class DireccionSerilizer(serializers.ModelSerializer):
-	slug_depa = serializers.SerializerMethodField()
-	slug_provi = serializers.SerializerMethodField()
-	slug_distri = serializers.SerializerMethodField()
 	class Meta:
 		model = Direccion
-		fields = ('id','tipo','direccion','codigo_postal','usuario','departamento','provincia','distrito','slug_depa','slug_provi','slug_distri')
-
-	def get_slug_depa(self,obj):
-		return obj.departamento.name
-
-	def get_slug_provi(self,obj):
-		return obj.provincia.name
-
-	def get_slug_distri(self,obj):
-		return obj.distrito.name
 
 class UsuarioSerializer(serializers.ModelSerializer):
-	direcciones = DireccionSerilizer(many=True)
-
 	class Meta:
 		model = User
-		fields = ('id','username','first_name','last_name','email','is_staff','direcciones')
+		fields = ('id','username','first_name','last_name','email','is_staff',)
 
 class PerfilUSerSerializer(serializers.ModelSerializer):
 	email = serializers.SerializerMethodField('get_email')
 	nombre = serializers.SerializerMethodField('get_nombre')
 	apellido = serializers.SerializerMethodField('get_apellido')
-
-	direcciones = DireccionSerilizer(many=True)
 	class Meta:
 		model = Cliente
-		fields = ('id','usuario','nombre','apellido','email','dni','telefono','direcciones')
+		fields = ('id','usuario','nombre','apellido','email','dni','telefono')
 
 	def get_email(self,obj):
 		return obj.usuario.email

@@ -20,10 +20,8 @@ class Direccion(models.Model):
 	distrito = models.CharField(max_length=100,blank=True,null=True)
 	direccion = models.CharField(max_length=100,blank=True,null=True)
 	ubigeo = models.ForeignKey(Ubigeo,max_length=100,blank=True,null=True,related_name='direccion')
+	referencia = models.CharField(max_length=200,blank=True,null=True)
 	codigo_postal = models.CharField(max_length=20,blank=True,null=True)
-
-	def __unicode__(self):
-		return 'Direccion de %s, es %s %s %s' %(self.usuario,self.departamento,self.provincia,self.distrito)
 
 class Comentario(models.Model):
 	producto = models.ForeignKey(Producto)
