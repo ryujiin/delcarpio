@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'sorl.thumbnail',
+    'storages',
     'gunicorn',
     #mis apps
     'carro',
@@ -110,6 +111,13 @@ STATIC_URL = '/static/'
 TEMPLATE_DIRS = (
     location('templates'),
 )
+
+DEFAULT_FILE_STORAGE  =  'storages.backends.s3boto.S3BotoStorage'
+AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
+STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+THUMBNAIL_STORAGE ='storages.backends.s3boto.S3BotoStorage'
 
 try:
     from .local import *
