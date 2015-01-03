@@ -1,0 +1,342 @@
+//letras
+f_imprenta ='Pathway Gothic One', sans-serif;
+f_cusrsiva = 'Great Vibes', cursive;
+
+color1 = #F7727A
+color2 = #2dbab2
+//Estructurales
+.contenedor
+	max-width 1200px
+	margin 0 auto
+#banner_header
+	height 400px
+	background-color #f9f9f9
+//Estilos
+body
+	a
+		color #111
+	.bloque
+		padding 2px
+	.bg-plomo
+		background #f4f4f4
+	img
+		width 100%
+	.enlinea
+		display inline-block
+	.titulo
+	.text_imprenta
+		font-family f_imprenta
+		text-transform uppercase
+	.text_cursiva
+		font-family f_cusrsiva
+	.visible
+		display block!important
+	.contraste1
+		background #111
+		color #fff
+	.clickeable
+		cursor pointer
+	.subtitulo
+		font italic 21px Georgia, "Times New Roman", serif
+#banner_header
+	&.banner
+		height 100px!important
+.btn-default.contraste1
+	color #fff
+	background #111
+	font-family f_imprenta
+	text-transform uppercase
+	font-size 1.2em
+	&:hover
+		background color2
+		color #111
+#contenido
+	padding 10px 0
+.carro
+	.titulo
+		text-align center
+	.subtitulo
+		font italic 21px Georgia, "Times New Roman", serif
+		span
+			font-weight bold
+		button
+			font-size 0.9em
+	.lineas_productos
+		.table
+			border-bottom 4px solid #111			
+			thead
+				text-transform uppercase
+			.cantidad
+				.boton-cantidad
+					cursor pointer
+				.numero
+					border 1px solid #ccc
+					padding 5px 20px
+			.img
+				width 160px
+			.name
+				font-size 20px
+	.table
+		font-family f_imprenta
+	#tabla_carro
+		.table
+			font-size 1.3em			
+			label
+				text-transform uppercase
+				font-weight normal
+	.panel-body
+		#lineas_carro
+			.img
+				width 110px
+			.nombre
+				font-size 1.2em
+		#tabla_carro
+			.table
+				border-bottom none
+				
+.comentarios
+	position relative
+	.boton-comentario
+		position absolute
+		top 0
+		right 0
+	.comentario
+		margin-top 15px
+		.coment_usuario
+			img
+				border-radius 100px
+			.tiempo
+				font italic 12px Georgia,"Times New Roman",serif
+		.coment_cuerpo
+			h3
+				margin 5px 0
+			.texto
+				background #f4f4f4
+				padding 10px
+				border-radius 10px
+				min-height 100px
+			.estrellitas
+				.activo
+					color color2
+				.no_activo
+					color #fff
+#formulario_comentario
+	.formulario_estrellas
+		margin 0 40px
+		button
+			outline none				
+			&.contraste
+				background #333
+				color #fff
+			&.contraste_fijo
+				background #333
+				color #fff
+	.puntuacion
+		.glyphicon
+			font-size 20px
+		.glyphicon-ok-sign
+			color #ccc
+	.has-success
+		label
+			color #333
+		.glyphicon-ok-sign
+			color #3c763d
+	.has-error
+		.glyphicon
+		label
+			color #a94442
+		.formulario_estrellas
+			.glyphicon
+				color #333
+			.contraste
+				.glyphicon
+					color #fff
+			.contraste_fijo
+				.glyphicon
+					color #fff
+.header_principal
+	padding 10px 0
+	border-top 1px solid #f4f4f4
+	border-bottom 1px solid #f4f4f4
+	#mini_carro
+		.number
+			background #333
+.header_utilis
+	#menu_top_ayuda
+	#menu_top_usuario
+		li
+			border-right 1px solid #f4f4f4
+		a
+			padding 5px 10px
+			letter-spacing 1px
+			display inline-block
+	#menu_top_buscar
+		span
+			padding 6px 10px
+	#menu_top_usuario
+		a
+			border-left 1px solid #f4f4f4	
+#logo
+	font-family f_cusrsiva
+	h1
+		padding 0
+		margin 0
+	a:hover
+		color #111
+		text-decoration none
+#linea_addcart
+	position absolute
+	width 300px
+	background #fff
+	box-shadow 0px 6px 4px rgba(0,0,0,0.5)
+	z-index 2
+	right 40px
+	text-align center
+	img
+		width 100px
+	.nombre_produ
+		font-family f_imprenta
+		text-transform uppercase
+#menu_top_ayuda
+	li
+		a
+			padding 0 5px
+#mini_carro
+	padding 10px
+#navegacion
+	li
+		a
+			padding 10px
+			display inline-block
+			font-size 1.1em
+.parallax
+	width 100%
+	background-position center top
+	overflow hidden
+	position relativa
+	background-attachment fixed
+	background-size: cover;
+	-moz-background-size: cover;
+	-webkit-background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
+.panel-default
+	.panel-heading
+		font-family f_imprenta
+		text-transform uppercase
+		&.contraste1
+			background #111
+			color #fff
+	
+.producto_single
+	label
+		text-transform uppercase
+		font-family f_imprenta
+		letter-spacing 1px
+	.text-uppercase
+		font-family f_imprenta
+	.colores
+		a
+			display inline-block
+			width 100px
+	.formulario_producto
+		width 300px
+		margin 10px auto
+		text-align center
+		button
+			width 100%
+			margin 10px 0
+	.titulo
+		margin 5px 0
+	.precios_single
+		font-family f_imprenta
+		.precio
+			font-size 1.5em		
+			margin 0 10px
+		.variacion
+			display none
+	#producto_galeria
+		padding-top 5px
+	#producto_video
+		padding-top 5px
+		text-align center
+		display none
+	.reviews
+		margin 3px 0
+		.estrellas
+			float left
+			margin 0 15px 0 0
+		.escribe
+			cursor pointer
+			text-transform uppercase
+			font-family f_imprenta
+	.seccion_producto
+		border-top 1px solid #f4f4f4
+		padding 5px 0
+	.categoria
+		border-left 1px solid #f4f4f4
+		border-right 1px solid #f4f4f4
+		padding 0 15px
+	.estilo
+		padding 0 15px
+	.seccion_2_producto
+		padding-top 2em
+		padding-bottom 2em
+		margin-top 2em
+	h3.subtitulo
+		font-family f_imprenta
+		text-decoration underline
+		font-style normal
+		font-size 1.8em
+	h4.subtitulo
+		font-size 1.1em
+		text-align center		
+.productos
+	.producto
+		&:hover
+			.icono
+				display block
+			.estrellas
+				opacity 1
+		a
+			font-size 1.2em
+		a:hover
+			color #333			
+		text-align center
+		position relative
+		.icono
+			position absolute
+			top 5px
+			display none
+			right 25px
+		.estrellas
+			opacity 0
+		.nombre_producto
+			text-transform uppercase
+			font-family f_imprenta
+			.nombre
+				font-weight bold
+		.precios
+			.old_precio
+				font-size 0.8em
+			.en_oferta
+				color color1
+			.precio
+				font-weight 600				
+ul.menu
+	padding 0
+	margin 0
+	li
+		list-style none
+		display inline-block
+		font-family f_imprenta
+		text-transform uppercase
+.reviews
+	.estrellas
+		.promedio
+			margin 0px 5px
+			font-weight bold
+			text-decoration underline
+.sin-titulo
+	.titulo
+		display none
