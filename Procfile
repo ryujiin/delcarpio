@@ -1,0 +1,1 @@
+web: gunicorn loviz.wsgi --log-file -
