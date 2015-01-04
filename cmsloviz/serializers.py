@@ -23,11 +23,11 @@ class PaginaSerializer(serializers.ModelSerializer):
 
 class LinkSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = Link	
+		model = Link
 
 class MenuSerialirzer(serializers.ModelSerializer):
 	links =LinkSerializer(many=True)
-	seccion = serializers.CharField(read_only=True)	
+	seccion = serializers.CharField(read_only=True)
 	template = serializers.CharField(read_only=True)	
 	class Meta:
 		model = Menu

@@ -20,7 +20,14 @@ class Link(models.Model):
 	menu = models.ForeignKey('Menu',related_name='links')
 	icono = models.CharField(max_length=120,blank=True,null=True)
 	enlace = models.CharField(max_length=120,blank=True,null=True)
+	peso = models.PositiveIntegerField(default=0)
 
+	class Meta:
+		unique_together = ('menu','peso')
+		ordering = ['peso']
+
+	def __unicode__(self):
+		return '%s de %s' %(self.titulo,self.menu)
 
 def url_imagen_pr(self,filename):
 	url = "bloque/imagen/%s" % (filename)

@@ -15,8 +15,7 @@ Loviz.Views.Menu = Backbone.View.extend({
         $(this.contenedor).append(this.$el);
         if (this.css!=='') {
             this.$el.addClass(this.css);
-        };
-    },
+        };    },
     sacar_datos:function () {
         this.que_template();
         this.css = this.model.toJSON().css;
