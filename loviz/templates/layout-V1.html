@@ -1,0 +1,839 @@
+{% extends "base.html" %}
+
+{%block layout%}
+	<header>
+    <section class="header_banner">
+      <div id="baner_top"></div>
+    </section>
+    <section class="header_utilis container-fluid">
+      <div class="row">
+        <div id="menu_top_ayuda" class="enlinea"></div>
+        <div id="menu_top_usuario" class="pull-right"></div>
+        <div id="menu_top_buscar" class="pull-right">
+          {% if user.is_staff %}
+          <a href="/desboard/"><span class="glyphicon glyphicon-cog"></span>Desboard</a>
+          {% endif %}
+          <span class="glyphicon glyphicon-search"></span>
+        </div>
+      </div>
+    </section>
+    <section class="header_principal container-fluid">
+      <div class="contenedor row">
+        <div class="col-md-3" id="logo"><h1><a class="link" href="/">LovizDelCarpio</a></h1></div>
+        <div class="col-md-7" id="navegacion"></div>
+        <div class="pull-right" id="mini_carro"></div>
+      </div>
+    </section>
+    <div id="linea_addcart"></div>
+    <section class="header_banner">
+      <div id="banner_header"></div>
+    </section>
+   </header>
+   <section id="contenido">
+   </section>
+   <footer>
+      <div id="footer"></div>
+      <div id="bootom_footer"></div>
+   </footer>
+{%endblock%}
+
+{% block templatesjs %}
+	{% verbatim %}
+      <!--Este es template Pagina-->
+      <script id="pagina_template" type="text/template">
+        <div class="contenedor">
+          <div class="banners">
+            <div class="contenedor">
+               <div class="container-fluid">
+                  <div id="banners" class="row">
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div id="breadcrumb">           
+         </div>
+         <div class="carruseles">
+            <div id="carruseles" class="contenedor">
+            </div>
+         </div>
+         <h1 class="titulo">{{titulo}}</h1>
+         <div id="cuerpo">{{cuerpo}}</div>
+         <div id="bloques_extras"></div>
+        </div>
+      </script>
+
+      <!--Este es template Catalgo-->
+      <script id="catalogo_template" type="text/template">
+        <div class="contenedor">
+          <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-2">
+              <aside class="lateral">
+                <div class="clear_filtros contraste1 text-center clickeable">
+                  Limpiar Filtros
+                </div>
+              </aside>
+            </div>
+            <div class="col-md-10">
+              <div id="filtros"></div>
+              <div class="productos"></div>
+              <div id="bloques_extras"></div>                          
+            </div>
+          </div>
+        </div>
+        </div>
+      </script>
+
+      <!--Este es Template de Carro-->
+      <script id="carro_template" type="text/template">
+        <div class="contenedor container-fluid">
+          <h1 class="titulo">Su carrito de compras</h1>
+         <div id="carro_cuerpo">
+            <h3 class="subtitulo"></h3>
+            {%if lineas != 0 %}
+              <div class="lineas_productos">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Ref. de producto</th>
+                            <th class="text-center">talla</th>
+                            <th class="text-center">Precio</th>
+                            <th class="text-center">Cantidad</th>
+                            <th class="text-center">subtotal</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="lineas_carro">
+                    </tbody>
+                </table>
+              </div>
+              <div class="row">
+                <div id="formu_envio" class="col-md-6 well"></div>
+                <div id="tabla_carro" class="col-md-6"></div>
+              </div>
+            {%endif%}
+         </div>
+         <div id="bloques_extras"></div>
+        </div>
+      </script>
+
+      <script id="num_lineas_carro_template" type="text/template">
+        Usted tiene <span>{{lineas}}</span> producto(s) en tu carrito de compras
+
+        {%if lineas!=0 %}
+          <button type="button" class="btn btn-default pull-right contraste1 procesar">Procesar mi compra</button>
+        {%endif%}
+      </script>
+
+      <script id="carro_tabla_total_template" type="text/template">
+            <table class="table">
+                <tr>
+                    <td><label for="">Subtotal</label></td>
+                    <td>S/. {{subtotal}}</td>
+                </tr>
+                <tr>
+                    <td><label for="">Envio estimado</label></td>
+                    <td>S/. {{envio}}</td>
+                </tr>
+                <tr>
+                    <td><label for="">Total</label></td>
+                    <td>S/. {{total}}</td>
+                </tr>
+            </table>
+            {%if pagar != true %}
+              <button type="button" class="btn btn-default pull-right procesar contraste1">Procesar mi compra</button>
+            {%endif%}
+      </script>
+
+      <script id="formulario_envio_template" type="text/template">
+          <p class="text-center">
+            Selecciona el Lugar de envio
+              <button class="btn btn-default btn-xs modificar pull-right contrate1">Modificar Direccion</button>
+          </p>
+          <form role="form" class="form-horizontal">
+              <div class="iput form-group">
+                  <label for="" class="col-sm-3 control-label">Pais</label>
+                  <div class="col-sm-9">
+                    <select name="pais" id="pais_envio" class="form-control">
+                      <option value="PE" selected>Peru</option>
+                    </select>
+                  </div>                  
+              </div>
+              <div class="input form-group">
+                  <label for="" class="col-sm-3 control-label">Departamento</label>                        
+                  <div class="col-sm-9">
+                    {%if slug_depa%}
+                      <p class="text-uppercase">{{slug_depa}}</p>
+                    {%else%}
+                    <select name="departamento" id="departamento_envio" class="form-control">
+                          <option>Por favor Seleccione</option>
+                    </select>
+                    {%endif%}
+                  </div>
+              </div>
+              <div class="input form-group">
+                  <label for="" class="col-sm-3 control-label">Provincia</label>
+                  <div class="col-sm-9">
+                    {%if slug_provi%}
+                      <p class="text-uppercase">{{slug_provi}}</p>
+                    {%else%}
+                    <select name="provincia" id="provincia_envio" class="form-control"></select>                   
+                    {%endif%}
+                  </div>
+              </div>
+              <div class="input form-group">
+                  <label for="" class="col-sm-3 control-label">Distrito</label>
+                  <div class="col-sm-9">
+                    {%if slug_distri%}
+                      <p class="text-uppercase">{{slug_distri}}</p>
+                    {%else%}
+                    <select name="distrito" id="distrito_envio" class="form-control"></select>                     
+                    {%endif%}
+                  </div>
+              </div>
+              <div class="input form-group calle">
+                  <label for="" class="col-sm-3 control-label">Direccion de Envio</label>
+                  <div class="col-sm-9">
+                    {%if direccion%}
+                      <p class="text-uppercase">{{direccion}}</p>
+                    {%else%}
+                    <input id="calle_envio" type="text" class="form-control" placeholder="Ingresa tu calle">
+                    {%endif%}
+                  </div>
+              </div>
+          </form>
+      </script>
+
+      <script id="mini_carro_template" type="text/template">
+        <a class="link" href="/carro/">
+          <span class="glyphicon glyphicon-shopping-cart"></span>Carrito <span class="badge number">{{lineas}}</span>
+        </a>
+      </script>
+
+      <script id="comprar_bloque_template" type="text/template">
+        <h3>{{titulo}}</h3>
+        <div class="cuerpo">
+        </div>
+      </script>
+
+      <script id="comprar_resumen_linea_template" type="text/template">
+        <td class="img"><img src="{{thum}}" alt=""></td>
+        <td class="nombre">
+          <div><strong>{{nombre}}</strong></div>
+        </td>
+        <td>
+          <div>Color:{{color}}</div>
+          <div>Talla:{{talla}}</div>
+          <div>Cantidad:{{cantidad}}</div>
+          <div>Subtotal:S/.{{subtotal}}</div>
+        </td>
+      </script>
+
+      <script id="carro_linea_template" type="text/template">
+        <td class="img"><img src="{{thum}}" alt=""></td>
+        <td class="name">
+          <div>{{full_name}}</div>
+        </td>
+        <td class="tall text-center">{{talla}}</td>
+        <td class="precio text-center">S/. {{precio}}</td>
+        <td class="cantidad text-center">
+          <span class="down boton-cantidad icon-arrow-down"></span>          
+          <span class="numero">{{cantidad}}</span>
+          <span class="up boton-cantidad icon-arrow-up"></span>
+          <input type="hidden" class="cantidad_num" value="{{cantidad}}">
+        </td>
+        <td class="total text-center">S/. {{subtotal}}</td>
+        <td class="accion text-center"><span class="icon-trashcan"></span></td>
+      </script>
+
+      <script id="linea_addcart_template" type="text/template">
+        <img src="{{thum}}" alt="">
+        <div class="nombre_produ">
+          <h4>{{full_name}}</h4>
+          <p>Añadido al carrito</p>
+        </div>
+      </script>
+
+      <!--Comprar pagina-->
+      <script id="comprar_template" type="text/template">
+        <div class="container-fluid">
+          <div class="contenedor row">
+            <h3 class="subtitulo">
+              Bienvenido a la pasarela de pago
+            </h3>
+            <div class="bloques row">
+              <div class="col-md-8">
+                <div class="bloque seccion envio">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <span class="badge">1</span> Direccion de Envio
+                    </div>
+                    <div class="panel-body">
+                      <div>
+                        <button type="button" class="btn btn-default contraste1 pull-right siguiente_envio">Siguente</button>               
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="bloque seccion pago">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <span class="badge">2</span> Metodos de Pago
+                    </div>
+                    <div class="panel-body">
+                      <div id="metodo_tarjeta" class="metodo col-md-12">
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="metodo_pago" id="optionsRadios1" value="option1" data-metodo="metodo_tarjeta">
+                            Pagar con Tarjeta <span class="icon-credit-card"></span>
+                          </label>
+                        </div>
+                        <div class="cuerpo_metodo">
+                          <div class="col-md-9">
+                            <form action="" method="POST" id="payment-form">
+                              <span class="payment-errors"></span>
+                              <div class="form-group col-md-12">
+                                <label for="label_a">Numero de la tarjeta</label>
+                                <input type="text" class="form-control" placeholder="Numero de la tarjeta" maxlength="20" data-stripe="number">
+                              </div>
+                              <div class="form-group col-md-6">
+                                <label for="label_a">Numero de seguridad (CVC)</label>
+                                <input type="text" class="form-control" placeholder="XXX" maxlength="3" data-stripe="cvc">
+                              </div>
+                              <div class="form-group col-md-6">
+                                <label for="label_a">Fecha de vencimientos</label>
+                                <div class="col-md-6">
+                                  <select class="form-control" data-stripe="exp-month" required>
+                                    <option value disabled>Mes</option>
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                  </select>
+                                </div>
+                                <div class="col-md-6">
+                                  <select class="form-control" data-stripe="exp-year" required>
+                                    <option value disabled>Año</option>
+                                    <option value="2014">2014</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-md-8">
+                                <p>Total en (soles) S/. 22.00 <span class="glyphicon glyphicon-resize-horizontal"></span> $14.00 </p>
+                              </div>
+                              <div class="col-md-4">
+                                <button class="btn btn-default contraste1 pago_stripe">Pagar mi Order</button>
+                              </div>
+                            </form>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="tutorial">
+                              Puedes pagar con cualquier tarjeta de credito o debito. <br>
+                              Tu pago se efectuara en dolares americanos (USD) al tipo de cambio de {{cambio}}.</br>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div id="metodo_paypal" class="metodo col-md-12">
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="metodo_pago" id="optionsRadios1" value="option1" data-metodo="metodo_paypal">
+                            Pagar con Paypal
+                          </label>
+                        </div>
+                        <div class="cuerpo_metodo">
+                          Si deseas pagar con Paypal. Si cuentas con una cuenta paypal puedes utilizarla en nuestra tienda online. Si no la tienes, también puedes crearla para realizar pagos en diferentes tipos de tarjeta de crédito. Una vez conforme serás re dirigido a la página oficial de paypal para concretar tu transacción.
+                          <div class="col-md-6"></div>
+                          <div class="col-md-6">
+                            <button class="btn btn-default contraste1">Pagar mi Order</button>                          
+                          </div>
+                        </div>
+                      </div>
+                      <div id="metodo_deposito" class="metodo col-md-12">
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="metodo_pago" id="optionsRadios1" value="option1" data-metodo="metodo_deposito">
+                            Deposito Bancario  (BCP)                             
+                          </label>
+                        </div>
+                        <div class="cuerpo_metodo"> 
+                            <p>
+                              Este servicio te permite pagar a nivel nacional realizando un depósito o transferencia de tu cuenta corriente o de ahorros directamente a nuestra cuenta. Para realizar el pago presencial debes:
+                            </p>
+                            Recuerda que tienes <b>48 horas</b> para efectuar el pago o tu pedido será cancelado automáticamente.
+                            <p><label for="">Numero de cuenta</label> 191-2078749-0-62</p>
+                            <p><label for="">Nombre de cuenta</label> Inversiones Lopez Del carpio EIRL</p>
+                            <div class="col-md-6"></div>
+                            <div class="col-md-6">
+                              <button class="btn btn-default contraste1">Pagar mi Order</button>                          
+                            </div>
+                        </div>
+                      </div>
+                      <div id="metodo_efectivo" class="metodo col-md-12">
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="metodo_pago" id="optionsRadios1" value="option1" data-metodo="metodo_efectivo">
+                            Pagar en efectivo  (contra entrega) 
+                          </label>
+                        </div>
+                        <div class="cuerpo_metodo">
+                          <p>Este servicio solo esta habilitado para Lima Metropolitana y Callao.</p>
+                          <p>Es sencillo usted solo debe seleccionar este metodo de pago y pagar cuando llega a su casa u oficina</p>
+                          <div class="col-md-6"></div>
+                            <div class="col-md-6">
+                              <button class="btn btn-default contraste1">Pagar mi Order</button>                          
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>  
+              <div class="col-md-4">
+                <div class="bloque seccion resumen">
+                  <div class="panel panel-default">
+                    <div class="panel-heading contraste1">
+                      Resumen de pedido
+                    </div>
+                    <div class="panel-body lineas_productos">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th></th>
+                            <th>nombre. de producto</th>
+                            <th>datos</th>
+                          </tr>
+                        </thead>
+                        <tbody id="lineas_carro">
+                        </tbody>
+                      </table>
+                      <div id="fw" class="col-md-3"></div>
+                      <div id="tabla_carro" class="col-md-9"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>  
+            </div>
+          </div>
+        </div>
+      </script>
+
+
+      <!--Este es Template de single_producto-->
+      <script id="producto_single_template" type="text/template">
+        <div class="container-fluid">
+          <div class="contenedor row">
+            <div id="galerias" class="col-md-7">
+              <ul class="nav nav-tabs">
+                <li role="presentation" class="active" data-tabs="#producto_galeria">                  
+                  <a href="#" ><span class="glyphicon glyphicon-picture"></span>Galeria</a>
+                </li>
+                {%if video%}
+                <li role="presentation" data-tabs="#producto_video">
+                  <a href="#"><span class="glyphicon glyphicon-eye-open"></span>Videos</a>
+                </li>
+                {%endif%}
+              </ul>
+              <div id="producto_galeria" class="tabs-seccion"></div>
+              {%if video%}
+              <div id="producto_video" class="tabs-seccion">
+                <iframe width="640" height="360" src="//www.youtube.com/embed/{{video}}" frameborder="0" allowfullscreen></iframe>
+              </div>
+              {%endif%}
+            </div>
+            <div id="datos" class="col-md-5">
+              <div class="text_imprenta">{{genero}}</div>
+              <h1 class="titulo">{{nombre}} - <i>{{marca}}</i></h1>
+              <div class="seccion_producto">
+                <div class="precios_single enlinea">
+                  {%for varia in variaciones %}
+                  <div class="variacion {%if loop.first%}visible{%endif%} {{varia.id}}">
+                    {%if varia.oferta > 0 %}
+                    <span class="old_precio"><del>S/.{{varia.precio}}</del></span>
+                    {%endif%}
+                    <span class="precio">S/. {{varia.precio_venta}}</span>
+                  </div>
+                  {%endfor%}
+                </div>
+                <div class="categoria enlinea">
+                  <label for="">Categoria:</label>
+                  <span class="text-uppercase">{{categoria}}</span>
+                </div>
+                <div class="estilo enlinea">
+                  <label for="">Estilo:</label>
+                  <span class="text-uppercase">
+                    {{estilo}}
+                  </span>                  
+                </div>
+              </div>
+              <div class="reviews seccion_producto">
+                <span class="escribe">Escribe tu comentario</span>
+              </div>
+              <div class="descripcion seccion_producto">
+                <label for="">Descripcion</label>
+                <p>
+                  {{descripcion|striptags}}                  
+                </p>
+              </div>
+              <div class="color_selection seccion_producto">
+                <label for="">Color Seleccionado:</label><span class="color">{{color}}</span>
+                <div class="colores">
+                  <a class="interno" href="#" class="nolink">
+                    {%for img in imagenes_producto%}
+                      {%if loop.first%}
+                        <img src="{{img.imagen_thum}}" alt="">
+                      {%endif%}
+                    {%endfor%}
+                  </a>
+                  {%for pariente in parientes%}
+                    <a class="link" href="/producto/{{pariente.slug}}/">
+                      <img src="{{pariente.thum}}" alt="">
+                    </a>
+                  {%endfor%}
+                  </div>
+                </div>
+                <div class="formulario_producto">
+                  <div>
+                    <select name="talla" id="" class="talla form-control">
+                      <option value=''>Selecciona una talla</option>
+                      {%for varia in variaciones%}
+                        <option value="{{varia.id}}">{{varia.talla}}</option>
+                      {%endfor%}
+                    </select>
+                  </div>
+                  <div>
+                    <button class="addcart btn btn-default contraste1"><span class="glyphicon glyphicon-shopping-cart"></span> Agregar al Carrito</button>
+                  </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+              <div class="detalles">
+                <h3 class="subtitulo">Informacion del Producto</h3>
+                {{detalles}}  
+              </div>
+              <div class="comentarios">
+                <h3 class="subtitulo">Comentarios de usuarios</h3>
+                <div id="comentarios">
+                  
+                </div>
+              </div>              
+            </div>
+            <div class="relacionados col-md-3">
+              <h4 class="subtitulo">Los clientes que compraron este artículo también compraron</h4>
+              <div class="productos" id="relacionados"></div>
+            </div>
+          </div>
+        </div>          
+      </script>
+
+      <script id="producto_single_galeria_template" type="text/template">
+        <div class="col-md-2 thum">
+          {%for img in imagenes_producto%}
+            <a class="interno" href="" data-bigimga="{{img.imagen}}">
+              <img src="{{img.imagen_thum}}" alt="">
+            </a>
+          {%endfor%}
+        </div>
+        <div class="col-md-10 imagenes">
+          {%for img in imagenes_producto%}
+            {%if loop.first%}
+              <img class="imagen_normal" src="{{img.imagen}}" alt="">
+            {%endif%}
+          {%endfor%}
+        </div>
+      </script>
+
+      <!--fin de los templates de los productos Singles-->
+
+      <!--Este es Template de Componentes-->
+      <script id="banner_template" type="text/template">
+         <a href="{{link}}">
+            <figure>
+               <img src="{{foto}}" alt="">
+            </figure>
+            <div class="cuerpo">
+               {{cuerpo}}
+            </div>
+         </a>
+      </script>
+
+      <!--Usaurio Inicio de Template-->
+      <script id="mini_usuario_template" type="text/template">
+        {%if username %}
+          <a class="link" href="/perfil/"><span class="glyphicon glyphicon-user"></span> {{username}}</a>
+        {%else%}
+          <a class="login_face" href="/login/facebook/">Ingresar con <span class=""></span></a>
+          <a class="link" href="/ingresar/"><span class="glyphicon glyphicon-user"></span> Ingresar</a>
+        {%endif%}
+      </script>
+
+      <script id="usuario_login_bloque_template" type="text/template">
+        <div class="panel panel-default">
+          <div class="panel-heading">Ingresar a su cuenta</div>
+          <div class="panel-body">
+            <p>Si usted es un usuario registrado, por favor, introduzca su email y contraseña.</p>
+            <form role="form">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Correo Electronico</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Contraseña</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox"> Recordarme
+                </label>
+              </div>
+              <p><a href="/">¿Has olvidado tu contraseña?</a></p>
+              <button type="submit" class="btn btn-default contraste1">Ingresar</button>
+            </form>
+          </div>
+        </div>
+      </script>
+
+      <script id="usuario_crear_bloque_template" type="text/template">
+        <div class="panel panel-default">
+          <div class="panel-heading">Nuevo Cliente</div>
+          <div class="panel-body">
+            <p>Al crear una cuenta en LovizdelCarpio.com tu proceso de compra es más rápido porque tus datos ya están registrados en nuestra tienda, además podrás hacer un seguimiento de tus pedidos y estar informado de las últimas novedades.</p>
+            <button class="btn btn-default aparecer contraste1">Crear Cuenta</button>
+            <div class="formulario">
+              <form role="form">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Correo Electronico</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Contraseña</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Repetir Contraseña</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+              </div>
+              <button type="submit" class="btn btn-default crear contraste1">Crear Cuenta</button>
+            </form>
+            </div>
+          </div>
+        </div>
+      </script>
+      <!--Fin de Vistas de Usuario-->
+
+      <script id="carrusel_cuerpo_left_template" type="text/template">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-md-3">
+                  <h2>{{titulo}}</h2>
+                  <div class="cuerpo">
+                     <p>{{cuerpo}}</p>
+                  </div>
+               </div>
+               <div class="col-md-9">
+                  <div class="lista"></div>
+               </div>
+            </div>
+         </div>
+      </script>
+
+      <script id="carrusel_cuerpo_derecha_template" type="text/template">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-md-9">                  
+                  <div class="lista"></div>
+               </div>
+               <div class="col-md-3">
+                  <h2>{{titulo}}</h2>
+                  <div class="cuerpo">
+                     <p>{{cuerpo}}</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </script>
+
+      <script id="carrusel_centro_template" type="text/template">
+        <h3>{{titulo}}</h3>
+        <div class="lista">
+        </div>
+      </script>
+      <!--Componentes Listas de la web-->
+      <script id="producto_lista_template" type="text/template">
+         <span class="icono glyphicon glyphicon-search"></span>
+            <a class="link" href="/producto/{{slug}}/">
+                <figure>
+                    <img src="{{thum}}" alt="{{full_name}} {{marca}}">
+                </figure>
+                <div class="nombre_producto">
+                    <div class="estilo">{{categoria}} {{estilo}}</div>
+                    <div class="nombre">{{nombre}} {{color}}</div>
+                </div>
+                <div class="precios">
+                    {%if en_oferta %}
+                    <span class="old_precio"><s>S/. {{precio}}</s></span>
+                    {%endif%}
+                    <span class="precio {%if en_oferta%}en_oferta{% endif %}">S/. {{precio_mostrar}}</span>
+                </div>
+            </a>
+            <div class="estrellas">
+                <span data-valor="1" class="glyphicon glyphicon-star"></span>
+                <span data-valor="2" class="glyphicon glyphicon-star"></span>
+                <span data-valor="3" class="glyphicon glyphicon-star"></span>
+                <span data-valor="4" class="glyphicon glyphicon-star"></span>
+                <span data-valor="5" class="glyphicon glyphicon-star-empty"></span>
+            </div>
+      </script>
+
+      <script id="comentarios_template" type="text/template">
+        <div class="formulario">
+          <button type="button" class="btn btn-default boton-comentario leer">Leer Comentarios</button>
+          <form id="formulario_comentario" class="col-md-9">            
+            <div class="form-group puntuacion">
+              <label for="">Mi puntuacion</label>
+              <span class="formulario_estrellas">
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-default 1" data-valor="1" data-texto='no esta bueno'>
+                    <span class="glyphicon glyphicon-star-empty "></span></button>
+                  <button type="button" class="btn btn-default 2" data-valor="2" data-texto='necesita algo mas especial'>
+                    <span class="glyphicon glyphicon-star-empty"></span></button>
+                  <button type="button" class="btn btn-default 3" data-valor="3" data-texto='normal'>
+                    <span class="glyphicon glyphicon-star-empty"></span></button>
+                  <button type="button" class="btn btn-default 4" data-valor="4" data-texto='Esta bueno'>
+                    <span  class="glyphicon glyphicon-star-empty"></span></button>
+                  <button type="button" class="btn btn-default 5" data-valor="5" data-texto='Perfecto!'>
+                    <span  class="glyphicon glyphicon-star-empty"></span></button>
+                </div>
+              </span>
+              <span class="texto-explicacion">Click para puntuar!</span>
+              <input type="hidden" id="valor_estrellas" data-contenedor="puntuacion">
+              <span class="glyphicon glyphicon-ok-sign pull-right verificar"></span>
+            </div>
+            <div class="form-group titulo_coment">
+              <label for="titulo_comentario">Titulo de tu Comentario *</label>
+              <input type="text" class="form-control" data-contenedor="titulo_coment" id="titulo_comentario" placeholder="Ejemplo: Exelente calidad!">
+              <span class="form-control-feedback verificado" aria-hidden="true"></span>
+            </div>
+            <div class="form-group comentario_texto">
+              <label for="comentario_texto">Tu Comentario *</label>
+              <textarea class="form-control" rows="3" id="comentario_texto" data-contenedor="comentario_texto"></textarea>
+              <span class="form-control-feedback verificado" aria-hidden="true"></span>
+            </div>
+            <div class="form-group email_comentario">
+              <label for="email_comentario">Correo Electronico *</label>
+              <input type="email" class="form-control" id="email_comentario" data-contenedor='email_comentario' placeholder="Ejemplo: tuemail@ejemplo.com">
+              <span class="form-control-feedback verificado" aria-hidden="true"></span>              
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+          </form>
+        </div>
+        <div class="lista_comentarios">
+          <button type="button" class="btn btn-default boton-comentario escribir">Escribir Comentario</button>
+          <div id="lista_comentarios"></div>
+        </div>
+      </script>
+
+      <script id="comentario_lista_template" type="text/template">
+        <div class="coment_usuario col-md-2 text-center">
+          <figure>
+            <img src="https://lh3.googleusercontent.com/-vxtOFsB6c08/UtWelvFRt3I/AAAAAAAAHpU/VgWmi3EqqaQ/s200-no/anonymous_200.gif" alt="">
+          </figure>
+          <div class="nombre">
+            {%if usuario%}          
+              <a href="/usuario/{{usuario}}">{{nombre}}</a>
+            {%else%}
+              Anonimo
+            {%endif%}
+          </div>
+          <div class="tiempo">Hace {{creado}}</div>
+        </div>
+        <div class="coment_cuerpo col-md-10">
+          <h3>{{titulo_comentario}}</h3>
+          <div class="texto">
+            <div class="estrellitas">
+              <span class="glyphicon glyphicon-star"></span>
+              <span class="glyphicon glyphicon-star"></span>
+              <span class="glyphicon glyphicon-star"></span>
+              <span class="glyphicon glyphicon-star"></span>
+              <span class="glyphicon glyphicon-star"></span>
+            </div>
+            {{comentario}}            
+          </div>
+        </div>
+      </script>
+
+      <script id="bloque_limpio" type="text/template">
+        {{cuerpo}}
+      </script>
+
+      <script id="bloque_template" type="text/template">
+        <h2 class="titulo">{{titulo}}</h2>
+        <div class="cuerpo_bloque">{{cuerpo}}</div>
+      </script>
+
+      <script id="menu_template" type="text/template">
+        <h2 class="titulo">
+          {{titulo}}
+        </h2>
+        <ul class="menu links">
+          {%for link in links%}
+            <li>
+              <a class="{{link.css}}" href="{{link.enlace}}">
+                {%if link.icono%}
+                  <span class="{{link.icono}}"></span>
+                {%endif%}
+                {{link.titulo}}
+              </a>
+            </li>
+          {%endfor%}
+        </ul>
+      </script>
+
+      <script id="estrellas_template" type="text/template">
+        {%for estrella in estrellas%}
+          {%if estrella %}
+            <span class="glyphicon glyphicon-star"></span>
+          {% else %}
+            <span class="glyphicon glyphicon-star-empty"></span>  
+          {%endif%}
+        {%endfor%}
+        <span class="promedio">{{promedio}}</span><span class="cantidad">({{num_coment}})</span>
+      </script>
+
+      <script id="bread_template" type="text/template">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Library</a></li>
+            <li class="active">Data</li>
+      </script>
+
+      <script id="filtro_template" type="text/template">
+        <h2 class="titulo">{{titulo}}</h2>
+        <div class="filtros"></div>
+      </script>
+
+      <script id="filtro_link_template" type="text/template">
+        {%if categoria === true%}
+          <a data-nombre='categoria_slug' data-valor='{{slug}}' class="link" href="/categoria/{{slug}}/">
+            <span class="icon-stop"></span>{{nombre}} ({{num}})</a>
+        {%else%}
+          <label>
+            <input type="radio" name="{{filtro}}" id="{{slug}}" value="{{slug}}" data-nombre='{{filtro}}' data-valor='{{nombre}}'>
+            {{nombre}} ({{num}})
+          </label>
+        {%endif%}
+      </script>
+
+      <script id="etique_filtro_template" type="text/template">
+        <span class="glyphicon glyphicon-remove"></span>{{nombre}}
+      </script>
+   {% endverbatim %}
+{% endblock %}

@@ -3,14 +3,13 @@ Loviz.Views.Menu = Backbone.View.extend({
     className: 'menu',
     events: {
     },
-    template:swig.compile($("#menu_template").html()),
+    template: swig.compile($("#menu_template").html()),
     
     initialize: function () {
         this.sacar_datos();
     },    
     render: function () {
         var album = this.model.toJSON();
-        
         var html = this.template(album);
         this.$el.html(html);
         $(this.contenedor).append(this.$el);
@@ -26,7 +25,7 @@ Loviz.Views.Menu = Backbone.View.extend({
     que_template:function () {
         if (this.model.toJSON().template!==null) {
             var teme = this.model.toJSON().template;
-            //this.template = swig.compileFile($(teme).html());            
+            this.template = swig.compile($(teme).html());            
         };
     }
 });

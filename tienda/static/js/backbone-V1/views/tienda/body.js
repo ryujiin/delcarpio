@@ -11,8 +11,8 @@ Loviz.Views.Body = Backbone.View.extend({
 	initialize : function ($el) {
 		var self = this;
 		this.$el = $el;
-		this.cargar_menus();
 		this.cargar_bloques();
+		this.cargar_menus();
 	},
 	link_intero:function (e) {
 		e.preventDefault();
@@ -40,6 +40,61 @@ Loviz.Views.Body = Backbone.View.extend({
 		};
 		return galleta
 	},
+	verificar_input_requerido:function (e) {
+		var div = $(e.currentTarget);
+		var valor = div.val();
+		var texto_ayuda;
+		if (valor ==='') {
+			texto_ayuda = '<span class="icon-cross2">Este campo es obligatorio*'
+			this.inputError(div,texto_ayuda);
+		}
+	},
+	verificar_pass:function (e) {
+		var div = $(e.currentTarget);
+		var valor = div.val();
+		var texto_ayuda;
+		var lonitud = valor.length;
+		if (valor!=='') {
+			if (lonitud<5) {
+				texto_ayuda = '<span class="icon-cross2">La contraseña no puede ser menor de 5 caracteres'
+				this.inputError(div,texto_ayuda)
+				div.val('');
+			}else{
+				div.addClass('bueno')
+				div.next().empty();	
+			}
+		};
+	},
+	verificar_email:function (e) {
+		var div = $(e.currentTarget);
+		var valor = div.val();
+		var texto_ayuda;
+		var email = this.validarEmail(valor)
+		if (valor!=='') {
+			if (email===false) {
+				texto_ayuda = '<span class="icon-cross2">Porfavor ingrese un Correo Valido'
+				this.inputError(div,texto_ayuda)
+				div.val('');
+			}else{
+				div.addClass('bueno')
+				div.next().empty();
+			}
+		};				
+	},
+	inputError:function (div,texto_ayuda) {
+		div.removeClass('bueno');
+		div.addClass('fallo');
+		contedor = div.next();
+		contedor.empty().addClass('text_fallo').append(texto_ayuda);
+	},
+	validarEmail:function( email ) {
+		expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+		if ( !expr.test(email) ){
+		 	return false
+		}else{
+		 	return true
+		}
+	},
 	modificar_cabezera:function (titulo,descripcion) {
 		document.title=titulo + ' | LovizdelCarpio.com'
 		$('meta[name="description"]').remove();
@@ -55,7 +110,6 @@ Loviz.Views.Body = Backbone.View.extend({
 		})
 	},
 	crear_bloque:function (bloque) {
-		window.collections.bloques.add(bloque)
 		var views_bloque = new Loviz.Views.Bloque({model:bloque});
 	},
 	cargar_menus:function () {
@@ -65,10 +119,9 @@ Loviz.Views.Body = Backbone.View.extend({
 			data:$.param({cms:'slug'})
 		}).done(function () {
 			self.coleccion_menus.forEach(self.crear_menu,self)
-		});
+		})
 	},
 	crear_menu:function (menu) {
-		window.collections.menus.add(menu);
 		var views_menu = new Loviz.Views.Menu({model:menu});
 	}
 });
